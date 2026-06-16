@@ -1,98 +1,94 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
+import { PortfolioHeader } from '@/components/portfolio-header';
+import { AboutSection } from '@/components/about-section';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import { useThemeColor } from '@/hooks/use-theme-color';
+import { portfolioProfile } from '@/constants/portfolio-data';
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+  const accentColor = useThemeColor({}, 'tint');
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+  return (
+    <ThemedView style={styles.container}>
+      <PortfolioHeader
+        name={portfolioProfile.name}
+        tagline={portfolioProfile.tagline}
+        initials={portfolioProfile.initials}
+      />
+
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+        <AboutSection bio={portfolioProfile.bio} experience={portfolioProfile.focus} />
+
+        <ThemedView style={styles.summaryCard}>
+          <ThemedText type="defaultSemiBold" style={styles.summaryTitle}>
+            Portfolio Snapshot
+          </ThemedText>
+          <ThemedText style={styles.summaryText}>
+            I build school-based systems, data-driven tools, and mobile-friendly interfaces with a
+            focus on practical workflows and clean presentation.
+          </ThemedText>
+
+          <ThemedView style={styles.pillRow}>
+            <ThemedView style={[styles.pill, { borderColor: accentColor }]}>
+              <ThemedText style={[styles.pillText, { color: accentColor }]}>Business Analytics</ThemedText>
+            </ThemedView>
+            <ThemedView style={[styles.pill, { borderColor: accentColor }]}>
+              <ThemedText style={[styles.pillText, { color: accentColor }]}>School Projects</ThemedText>
+            </ThemedView>
+            <ThemedView style={[styles.pill, { borderColor: accentColor }]}>
+              <ThemedText style={[styles.pillText, { color: accentColor }]}>Mobile + Web</ThemedText>
+            </ThemedView>
+          </ThemedView>
+        </ThemedView>
+      </ScrollView>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  container: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    paddingBottom: 20,
+  },
+  summaryCard: {
+    marginHorizontal: 4,
+    borderRadius: 22,
+    padding: 18,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowRadius: 20,
+    shadowOffset: { width: 0, height: 10 },
+    elevation: 4,
+  },
+  summaryTitle: {
+    fontSize: 20,
+    marginBottom: 10,
+  },
+  summaryText: {
+    fontSize: 14,
+    lineHeight: 21,
+    marginBottom: 14,
+  },
+  pillRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+    flexWrap: 'wrap',
+    gap: 10,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  pill: {
+    borderWidth: 1,
+    borderRadius: 999,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  pillText: {
+    fontSize: 12,
+    fontWeight: '700',
   },
 });

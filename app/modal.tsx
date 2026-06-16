@@ -1,3 +1,4 @@
+// @ts-ignore: Suppress missing type declarations for expo-router
 import { Link } from 'expo-router';
 import { StyleSheet } from 'react-native';
 
