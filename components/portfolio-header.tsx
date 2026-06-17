@@ -4,8 +4,6 @@ import { ThemedText } from './themed-text';
 import { ThemedView } from './themed-view';
 import { useThemeColor } from '@/hooks/use-theme-color';
 
-const AVATAR_URL = 'https://cdn-icons-png.flaticon.com/512/4140/4140047.png';
-
 interface PortfolioHeaderProps {
   name: string;
   tagline: string;
@@ -21,7 +19,7 @@ export function PortfolioHeader({ name, tagline }: PortfolioHeaderProps) {
       {/* Avatar Image */}
       <View style={[styles.avatarCircle, { borderColor: tintColor }]}>
         <Image
-          source={{ uri: AVATAR_URL }}
+          source={require('@/assets/images/pic.jpg')}
           style={styles.avatarImage}
           contentFit="cover"
         />
