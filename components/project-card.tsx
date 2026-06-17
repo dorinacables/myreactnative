@@ -42,57 +42,35 @@ export function ProjectCard({ title, description, tech, status, imageUrl, onPres
           opacity: pressed ? 0.7 : 1,
         },
       ]}>
-      <View style={styles.previewBox}>
-        <Image source={{ uri: imageUrl }} style={styles.previewImage} contentFit="cover" />
-        <View style={[styles.previewOverlay, { backgroundColor: imageOverlayColor }]} />
+      {/* Thumbnail on the left */}
+      <View style={styles.thumbnail}>
+        <Image source={{ uri: imageUrl }} style={styles.thumbnailImage} contentFit="cover" />
+        <View style={[styles.thumbnailOverlay, { backgroundColor: imageOverlayColor }]} />
       </View>
 
-      <View style={styles.cardHeader}>
+      {/* Content on the right */}
+      <View style={styles.contentArea}>
+        <View style={styles.badgeRow}>
+          <View style={[styles.statusBadge, { backgroundColor: statusBgColor[status] }]}>
+            <ThemedText style={[styles.statusText, { color: statusTextColor[status] }]}>
+              {status === 'in-progress' ? 'In Progress' : status.charAt(0).toUpperCase() + status.slice(1)}
+            </ThemedText>
+          </View>
+        </View>
+
         <ThemedText type="defaultSemiBold" style={styles.title}>
           {title}
         </ThemedText>
-        <View
-          style={[
-            styles.statusBadge,
-            {
-              backgroundColor: statusBgColor[status],
-            },
-          ]}>
-          <ThemedText
-            style={[
-              styles.statusText,
-              {
-                color: statusTextColor[status],
-              },
-            ]}>
-            {status === 'in-progress' ? 'In Progress' : status.charAt(0).toUpperCase() + status.slice(1)}
-          </ThemedText>
+
+        <ThemedText style={styles.description}>{description}</ThemedText>
+
+        <View style={styles.techContainer}>
+          {tech.map((t, idx) => (
+            <View key={`tech-${idx}`} style={[styles.techTag, { backgroundColor: techTagBackgroundColor }]}>
+              <ThemedText style={[styles.techTagText, { color: tintColor }]}>{t}</ThemedText>
+            </View>
+          ))}
         </View>
-      </View>
-
-      <ThemedText style={styles.description}>{description}</ThemedText>
-
-      <View style={styles.techContainer}>
-        {tech.map((t, idx) => (
-          <View
-            key={`tech-${idx}`}
-            style={[
-              styles.techTag,
-              {
-                backgroundColor: techTagBackgroundColor,
-              },
-            ]}>
-            <ThemedText
-              style={[
-                styles.techTagText,
-                {
-                  color: tintColor,
-                },
-              ]}>
-              {t}
-            </ThemedText>
-          </View>
-        ))}
       </View>
     </Pressable>
   );
@@ -102,60 +80,66 @@ const styles = StyleSheet.create({
   cardContainer: {
     borderWidth: 1,
     borderRadius: 16,
-    padding: 16,
+    padding: 12,
     marginHorizontal: 20,
     marginBottom: 14,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 12,
   },
-  previewBox: {
-    position: 'relative',
-    borderRadius: 14,
-    marginBottom: 14,
+  thumbnail: {
+    width: 90,
+    height: 90,
+    borderRadius: 12,
     overflow: 'hidden',
+    flexShrink: 0,
+    position: 'relative',
   },
-  previewImage: {
-    height: 128,
+  thumbnailImage: {
+    width: '100%',
+    height: '100%',
   },
-  previewOverlay: {
+  thumbnailOverlay: {
     ...StyleSheet.absoluteFillObject,
   },
-  cardHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 12,
-    gap: 10,
-  },
-  title: {
-    fontSize: 16,
+  contentArea: {
     flex: 1,
   },
+  badgeRow: {
+    flexDirection: 'row',
+    marginBottom: 6,
+  },
   statusBadge: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
   },
   statusText: {
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: '600',
   },
+  title: {
+    fontSize: 14,
+    marginBottom: 4,
+  },
   description: {
-    fontSize: 13,
-    lineHeight: 19,
-    marginBottom: 12,
+    fontSize: 12,
+    lineHeight: 17,
+    marginBottom: 8,
     opacity: 0.85,
   },
   techContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 6,
+    gap: 5,
   },
   techTag: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
   },
   techTagText: {
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: '500',
   },
 });
